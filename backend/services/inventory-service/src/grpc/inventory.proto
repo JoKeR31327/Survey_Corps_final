@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+service InventoryService {
+  rpc ReserveStock (ReserveRequest) returns (ReserveResponse);
+}
+
+message ReserveRequest {
+  string order_id = 1;
+  string product_id = 2;
+  int32 quantity = 3;
+}
+
+message ReserveResponse {
+  bool success = 1;
+  bool replay = 2;
+}

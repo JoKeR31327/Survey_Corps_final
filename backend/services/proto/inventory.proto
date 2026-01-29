@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package inventory;
+
+// Inventory is an internal service.
+// This API is used ONLY by Order Service.
+service InventoryService {
+  // Reserve stock for an order.
+  // This call MUST be idempotent based on order_id.
+  rpc ReserveStock (ReserveStockRequest) returns (ReserveStockResponse);
+}
+
+// Request sent by Order Service
+message ReserveStockRequest {
+  string order_id = 1;    // Idempotency key (REQUIRED)
+  string product_id = 2;  // Product identifier
+  int32 quantity = 3;     // Quantity requested
+}
+
+// Response returned to Order Service
+message ReserveStockResponse {
+  bool success = 1;       // Whether stock was reserved
+  bool replay = 2;        // True if this was a replayed request
+}

@@ -1,0 +1,110 @@
+import { useState } from "react";
+import Header from "../components/Header";
+import { authRequest } from "../api/client";
+import { ORDER_API } from "../api/config";
+import { clearCart, getCart, getToken, removeFromCart } from "../utils/storage";
+
+export default function Cart({ go }) {
+  const [cart, setCart] = useState(getCart());
+  const [placing, setPlacing] = useState(false);
+  const [results, setResults] = useState([]);
+
+  const placeOrders = async () => {
+    const token = getToken();
+    if (!token) {
+      alert("Please log in first.");
+      go("login");
+      return;
+    }
+
+    setPlacing(true);
+    const out = [];
+    for (const item of cart) {
+      try {
+        const data = await authRequest(`${ORDER_API}/api/orders`, token, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            product_id: item.product_id,
+            quantity: item.quantity
+          })
+        });
+        out.push({ product_id: item.product_id, status: data.status });
+      } catch (err) {
+        out.push({ product_id: item.product_id, status: "ERROR", message: err.message });
+      }
+    }
+    setResults(out);
+    clearCart();
+    setCart([]);
+    setPlacing(false);
+  };
+  return (
+    <div
+      style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+    >
+      <Header go={go} />
+      <div className="container">
+        <h2>🛒 Shopping Cart</h2>
+
+        {cart.length === 0 ? (
+          <div className="empty-state">
+            <h3>Your cart is empty</h3>
+            <p>Add products from the catalog to get started.</p>
+            <button
+              onClick={() => go("main")}
+              className="primary-btn"
+              style={{ maxWidth: "300px", margin: "20px auto 0" }}
+            >
+              Continue Shopping
+            </button>
+          </div>
+        ) : (
+          <div style={{ display: "grid", gap: "12px" }}>
+            {cart.map((item) => (
+              <div key={item.product_id} className="card">
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <div>
+                    <h3 style={{ marginBottom: "6px" }}>{item.product_name}</h3>
+                    <p style={{ color: "#7f8c8d" }}>ID: {item.product_id}</p>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <p style={{ fontWeight: 600 }}>Qty: {item.quantity}</p>
+                  </div>
+                </div>
+                <button
+                  className="secondary-btn"
+                  style={{ marginTop: "10px" }}
+                  onClick={() => setCart(removeFromCart(item.product_id))}
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+            <button
+              className="primary-btn"
+              onClick={placeOrders}
+              disabled={placing}
+            >
+              {placing ? "Placing orders..." : "Place Orders"}
+            </button>
+          </div>
+        )}
+
+        {results.length > 0 && (
+          <div style={{ marginTop: "20px" }}>
+            <h3>Order Results</h3>
+            <ul>
+              {results.map((r) => (
+                <li key={r.product_id}>
+                  {r.product_id}: {r.status}
+                  {r.message ? ` (${r.message})` : ""}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

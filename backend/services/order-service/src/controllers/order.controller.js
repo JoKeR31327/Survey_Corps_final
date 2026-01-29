@@ -20,15 +20,12 @@ exports.createOrder = async (req, res) => {
       quantity
     });
 
-    if (!result.success) {
-      return res.status(409).json({ message: "Out of stock" });
-    }
-
-    res.status(201).json({
+    return res.status(202).json({
       order_id: orderId,
-      status: "CONFIRMED",
-      replay: result.replay === true
+      status: "PROCESSING",
+      queued: result.queued === true
     });
+
 
   } catch {
     res.status(503).json({

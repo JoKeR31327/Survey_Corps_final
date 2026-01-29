@@ -2,7 +2,6 @@ require("dotenv").config();
 
 module.exports = {
   HTTP_PORT: process.env.HTTP_PORT || 8080,
-  GRPC_PORT: process.env.GRPC_PORT || 50051,
 
   DB_HOST: process.env.DB_HOST,
   DB_PORT: process.env.DB_PORT,

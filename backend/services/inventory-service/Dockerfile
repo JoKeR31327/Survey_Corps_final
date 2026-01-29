@@ -14,9 +14,8 @@ RUN npm install --only=production
 COPY src ./src
 COPY sql ./sql
 
-# 6. Expose HTTP and gRPC ports
+# 6. Expose HTTP port
 EXPOSE 8080
-EXPOSE 50051
 
 # 7. Start service
 CMD ["node", "src/server.js"]

@@ -2,6 +2,8 @@
 
 ✅ The system is deployed and working on GCP (Cloud Run + Cloud SQL).
 
+**Reliability Note:** Inventory now uses a transactional outbox so callbacks are retried even if it crashes after committing inventory.
+
 ## GCP Deploy (Cloud Run)
 
 ### Prereqs
@@ -24,8 +26,12 @@ gcloud run deploy user-service --region us-central1 --image gcr.io/warehouse-485
 From `backend/services/inventory-service`:
 ```
 gcloud builds submit "e:\hackathon_final\Survey_Corps_final\backend\services\inventory-service" --tag "gcr.io/warehouse-485805/inventory-service"
-gcloud run deploy inventory-service --region us-central1 --image gcr.io/warehouse-485805/inventory-service --allow-unauthenticated --add-cloudsql-instances warehouse-485805:us-central1:your-self --set-env-vars "DB_HOST=/cloudsql/warehouse-485805:us-central1:your-self,DB_PORT=5432,DB_NAME=warehouse_db,DB_USER=warehouse_user,DB_PASSWORD=Pir08CXKH7DAuNVgby2p,ORDER_SERVICE_URL=https://order-service-186174310908.us-central1.run.app,ORDER_CALLBACK_SECRET=sorry-for-late"
+gcloud run deploy inventory-service --region us-central1 --image gcr.io/warehouse-485805/inventory-service --allow-unauthenticated --add-cloudsql-instances warehouse-485805:us-central1:your-self --set-env-vars "DB_HOST=/cloudsql/warehouse-485805:us-central1:your-self,DB_PORT=5432,DB_NAME=warehouse_db,DB_USER=warehouse_user,DB_PASSWORD=Pir08CXKH7DAuNVgby2p,ORDER_SERVICE_URL=https://order-service-186174310908.us-central1.run.app,ORDER_CALLBACK_SECRET=sorry-for-late,OUTBOX_RETRY_MS=5000,OUTBOX_MAX_ATTEMPTS=10"
 ```
+
+### Cloud SQL Migration (Outbox)
+Apply the new outbox table in Cloud SQL using:
+- [backend/services/inventory-service/sql/schema.sql](backend/services/inventory-service/sql/schema.sql)
 
 ### Deploy order-service
 From `backend/services/order-service`:

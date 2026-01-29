@@ -2,6 +2,7 @@ const inventoryModel = require("../models/inventory.model");
 const transactionModel = require("../models/transaction.model");
 const chaos = require("./chaos.service");
 const pool = require("../config/db");
+const { CHAOS_POST_COMMIT_FAIL, CHAOS_FAIL_MODULO } = require("../config/env");
 
 exports.getProducts = () => inventoryModel.findAll();
 exports.getProduct = (id) => inventoryModel.findById(id);
@@ -23,6 +24,12 @@ exports.reserveStock = async ({ orderId, productId, quantity }) => {
         orderId, productId, quantity, status: "FAILED"
       });
       await client.query("COMMIT");
+      if (CHAOS_POST_COMMIT_FAIL) {
+        const orderNum = Number(orderId.replace(/\D/g, "")) || 0;
+        if (orderNum % CHAOS_FAIL_MODULO === 0) {
+          throw new Error("Simulated post-commit crash");
+        }
+      }
       return { success: false };
     }
 
@@ -32,6 +39,12 @@ exports.reserveStock = async ({ orderId, productId, quantity }) => {
     });
 
     await client.query("COMMIT");
+    if (CHAOS_POST_COMMIT_FAIL) {
+      const orderNum = Number(orderId.replace(/\D/g, "")) || 0;
+      if (orderNum % CHAOS_FAIL_MODULO === 0) {
+        throw new Error("Simulated post-commit crash");
+      }
+    }
     return { success: true };
 
   } catch (e) {

@@ -1,7 +1,13 @@
-FROM node:20-alpine
+FROM node:18-alpine
+
 WORKDIR /app
+
 COPY package*.json ./
-RUN npm install
-COPY . .
-EXPOSE 4000
+RUN npm install --only=production
+
+COPY src ./src
+COPY proto ./proto
+
+EXPOSE 8080
+
 CMD ["node", "src/server.js"]

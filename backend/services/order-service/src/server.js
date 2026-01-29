@@ -1,6 +1,6 @@
 const app = require("./app");
-const { PORT } = require("./config/env");
+const { HTTP_PORT } = require("./config/env");
 
-app.listen(PORT, () =>
-  console.log(`Order Service running on ${PORT}`)
-);
+app.listen(HTTP_PORT, () => {
+  console.log(`Order Service running on port ${HTTP_PORT}`);
+});

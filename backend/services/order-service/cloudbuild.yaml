@@ -1,6 +1,0 @@
-steps:
-- name: gcr.io/cloud-builders/docker
-  args: ['build','-t','REGION-docker.pkg.dev/PROJECT/order-service','.']
-
-- name: gcr.io/cloud-builders/docker
-  args: ['push','REGION-docker.pkg.dev/PROJECT/order-service']

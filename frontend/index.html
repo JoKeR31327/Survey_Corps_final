@@ -1,55 +1,13 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
-    <title>Survey Corps Systems</title>
-    <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>frontend</title>
   </head>
   <body>
-    <!-- LOGIN PAGE -->
-    <div id="login-page" class="page">
-      <h2>SURVEY CORPS SYSTEMS</h2>
-
-      <input id="username" placeholder="Username" />
-      <input id="password" type="password" placeholder="Password" />
-
-      <button onclick="login()">LOGIN</button>
-    </div>
-
-    <!-- MAIN PAGE -->
-    <div id="main-page" class="page hidden">
-      <header>
-        <strong>SURVEY_CORPS_SYSTEMS</strong>
-        <div>
-          <button onclick="goToOrders()">ORDERS</button>
-          <button onclick="goToCart()">CART</button>
-        </div>
-      </header>
-
-      <input placeholder="Search products..." />
-
-      <div id="product-list"></div>
-    </div>
-
-    <!-- CART PAGE -->
-    <div id="cart-page" class="page hidden">
-      <h3>MY CART</h3>
-      <div id="cart-items"></div>
-
-      <hr />
-      <div>SUBTOTAL: <span id="subtotal">0</span></div>
-
-      <button onclick="placeOrder()">PLACE ORDER</button>
-      <button onclick="goToMain()">BACK</button>
-    </div>
-
-    <!-- ORDERS PAGE -->
-    <div id="orders-page" class="page hidden">
-      <h3>MY ORDERS</h3>
-      <div id="orders-list"></div>
-
-      <button onclick="goToMain()">BACK</button>
-    </div>
-
-    <script src="app.js"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

@@ -1,0 +1,12 @@
+body {
+  background: #f2f2f2;
+  font-family: monospace;
+}
+
+.container {
+  background: #fff;
+  padding: 30px;
+  margin: 40px auto;
+  max-width: 520px;
+  border: 2px solid #000;
+}

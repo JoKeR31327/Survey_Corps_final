@@ -47,6 +47,8 @@ services:
       ORDER_SERVICE_URL: http://order-service:8080
       ORDER_CALLBACK_SECRET: local-callback-secret
       CHAOS_ENABLED: "false"
+      OUTBOX_RETRY_MS: 5000
+      OUTBOX_MAX_ATTEMPTS: 10
     ports:
       - "8083:8080"
     depends_on:
@@ -85,6 +87,19 @@ services:
     container_name: warehouse-frontend
     ports:
       - "8080:8080"
+    depends_on:
+      - user-service
+      - order-service
+      - inventory-service
+
+  tests:
+    build:
+      context: ./backend/services/tests
+    container_name: warehouse-tests
+    environment:
+      INVENTORY_SERVICE_URL: http://inventory-service:8080
+      ORDER_SERVICE_URL: http://order-service:8080
+      USER_SERVICE_URL: http://user-service:8080
     depends_on:
       - user-service
       - order-service

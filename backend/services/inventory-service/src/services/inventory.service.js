@@ -1,5 +1,6 @@
 const inventoryModel = require("../models/inventory.model");
 const transactionModel = require("../models/transaction.model");
+const outboxService = require("./outbox.service");
 const chaos = require("./chaos.service");
 const pool = require("../config/db");
 const { CHAOS_POST_COMMIT_FAIL, CHAOS_FAIL_MODULO } = require("../config/env");
@@ -23,6 +24,7 @@ exports.reserveStock = async ({ orderId, productId, quantity }) => {
       await transactionModel.create(client, {
         orderId, productId, quantity, status: "FAILED"
       });
+      await outboxService.enqueue(client, orderId, "FAILED");
       await client.query("COMMIT");
       if (CHAOS_POST_COMMIT_FAIL) {
         const orderNum = Number(orderId.replace(/\D/g, "")) || 0;
@@ -37,6 +39,7 @@ exports.reserveStock = async ({ orderId, productId, quantity }) => {
     await transactionModel.create(client, {
       orderId, productId, quantity, status: "SUCCESS"
     });
+    await outboxService.enqueue(client, orderId, "CONFIRMED");
 
     await client.query("COMMIT");
     if (CHAOS_POST_COMMIT_FAIL) {

@@ -16,6 +16,9 @@ module.exports = {
   CHAOS_POST_COMMIT_FAIL: process.env.CHAOS_POST_COMMIT_FAIL === "true",
   CHAOS_FAIL_MODULO: Number(process.env.CHAOS_FAIL_MODULO || 3),
 
+  OUTBOX_RETRY_MS: Number(process.env.OUTBOX_RETRY_MS || 5000),
+  OUTBOX_MAX_ATTEMPTS: Number(process.env.OUTBOX_MAX_ATTEMPTS || 10),
+
   ORDER_SERVICE_URL: process.env.ORDER_SERVICE_URL,
   ORDER_CALLBACK_SECRET: process.env.ORDER_CALLBACK_SECRET
 };

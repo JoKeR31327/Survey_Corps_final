@@ -1,0 +1,16 @@
+{
+  "name": "survey-corps-tests",
+  "private": true,
+  "version": "1.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "test": "jest --config jest.config.js",
+    "test:all": "jest --config jest.config.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

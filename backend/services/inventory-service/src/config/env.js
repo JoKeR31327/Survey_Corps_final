@@ -11,5 +11,8 @@ module.exports = {
 
   CHAOS_ENABLED: process.env.CHAOS_ENABLED === "true",
   CHAOS_DELAY_MS: Number(process.env.CHAOS_DELAY_MS || 5000),
-  CHAOS_MODULO: Number(process.env.CHAOS_MODULO || 5)
+  CHAOS_MODULO: Number(process.env.CHAOS_MODULO || 5),
+
+  ORDER_SERVICE_URL: process.env.ORDER_SERVICE_URL,
+  ORDER_CALLBACK_SECRET: process.env.ORDER_CALLBACK_SECRET
 };

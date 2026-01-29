@@ -1,3 +1,15 @@
+const pool = require("../config/db");
+
 module.exports = async (_, res) => {
-  res.json({ status: "UP" });
+  try {
+    await pool.query("SELECT 1");
+    await pool.query("SELECT 1 FROM orders LIMIT 1");
+    res.json({ status: "UP", db: "OK" });
+  } catch (err) {
+    res.status(500).json({
+      status: "DOWN",
+      db: "ERROR",
+      message: err.message
+    });
+  }
 };

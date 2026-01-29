@@ -10,6 +10,10 @@ module.exports = {
   QUEUE_NAME: process.env.QUEUE_NAME,
   INVENTORY_TASK_URL: process.env.INVENTORY_TASK_URL,
 
+  INVENTORY_WAIT_MS: Number(process.env.INVENTORY_WAIT_MS || 15000),
+  INVENTORY_POLL_MS: Number(process.env.INVENTORY_POLL_MS || 1000),
+  ORDER_CALLBACK_SECRET: process.env.ORDER_CALLBACK_SECRET,
+
   DB_HOST: process.env.DB_HOST,
   DB_PORT: process.env.DB_PORT,
   DB_USER: process.env.DB_USER,

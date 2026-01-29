@@ -5,6 +5,8 @@ module.exports = {
   JWT_SECRET: process.env.JWT_SECRET,
   INVENTORY_HTTP_URL: process.env.INVENTORY_HTTP_URL,
 
+  USE_CLOUD_TASKS: process.env.USE_CLOUD_TASKS !== "false",
+
   PROJECT_ID: process.env.PROJECT_ID,
   LOCATION: process.env.LOCATION,
   QUEUE_NAME: process.env.QUEUE_NAME,

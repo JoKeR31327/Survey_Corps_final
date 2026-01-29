@@ -2,12 +2,28 @@ import { useState } from "react";
 import Header from "../components/Header";
 import { authRequest } from "../api/client";
 import { ORDER_API } from "../api/config";
-import { clearCart, getCart, getToken, removeFromCart } from "../utils/storage";
+import {
+  clearCart,
+  getCart,
+  getToken,
+  removeFromCart,
+  setCart as setCartStorage
+} from "../utils/storage";
 
-export default function Cart({ go }) {
+export default function Cart({ go, back }) {
   const [cart, setCart] = useState(getCart());
   const [placing, setPlacing] = useState(false);
   const [results, setResults] = useState([]);
+
+  const updateQuantity = (productId, delta) => {
+    const next = cart.map((item) => {
+      if (item.product_id !== productId) return item;
+      const nextQty = Math.max(1, (item.quantity || 1) + delta);
+      return { ...item, quantity: nextQty };
+    });
+    setCart(next);
+    setCartStorage(next);
+  };
 
   const placeOrders = async () => {
     const token = getToken();
@@ -43,7 +59,7 @@ export default function Cart({ go }) {
     <div
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
-      <Header go={go} />
+      <Header go={go} back={back} />
       <div className="container">
         <h2>🛒 Shopping Cart</h2>
 
@@ -69,7 +85,26 @@ export default function Cart({ go }) {
                     <p style={{ color: "#7f8c8d" }}>ID: {item.product_id}</p>
                   </div>
                   <div style={{ textAlign: "right" }}>
-                    <p style={{ fontWeight: 600 }}>Qty: {item.quantity}</p>
+                    <p style={{ fontWeight: 600, marginBottom: "6px" }}>
+                      Qty: {item.quantity}
+                    </p>
+                    <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
+                      <button
+                        className="secondary-btn"
+                        style={{ padding: "8px 12px" }}
+                        onClick={() => updateQuantity(item.product_id, -1)}
+                        disabled={item.quantity <= 1}
+                      >
+                        ➖
+                      </button>
+                      <button
+                        className="secondary-btn"
+                        style={{ padding: "8px 12px" }}
+                        onClick={() => updateQuantity(item.product_id, 1)}
+                      >
+                        ➕
+                      </button>
+                    </div>
                   </div>
                 </div>
                 <button

@@ -228,6 +228,99 @@ table {
   width: 100%;
 }
 
+.themed-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.themed-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+}
+
+.themed-table th,
+.themed-table td {
+  padding: 14px 16px;
+  text-align: left;
+}
+
+.themed-table tbody tr {
+  border-bottom: 1px solid #eef1f6;
+  transition: background-color 0.2s ease;
+}
+
+.themed-table tbody tr:hover {
+  background: #f8f9fb;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-confirmed {
+  background: #e8f7ef;
+  color: #1e8f5c;
+}
+
+.status-failed {
+  background: #fdecea;
+  color: #c0392b;
+}
+
+.status-processing {
+  background: #fff3cd;
+  color: #b26a00;
+}
+
+.status-up {
+  background: #e8f7ef;
+  color: #1e8f5c;
+}
+
+.status-down {
+  background: #fdecea;
+  color: #c0392b;
+}
+
+.sparkline {
+  display: block;
+  background: #f8f9fb;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.log-panel {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 10px;
+  padding: 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  max-height: 220px;
+  overflow: auto;
+}
+
+.log-panel ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.log-panel li {
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
 table button:disabled {
   opacity: 0.5;
   cursor: not-allowed;

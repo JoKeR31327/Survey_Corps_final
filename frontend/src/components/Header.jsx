@@ -1,13 +1,19 @@
 import { clearToken } from "../utils/storage";
 
-export default function Header({ go, isAdmin = false }) {
+export default function Header({ go, back, isAdmin = false }) {
   const userNavItems = [
     { label: "Products", page: "main", icon: "📦" },
     { label: "Cart", page: "cart", icon: "🛒" },
     { label: "Orders", page: "orders", icon: "📋" },
+    { label: "Health", page: "health", icon: "🩺" },
+    { label: "Dashboard", page: "dashboard", icon: "📈" }
   ];
 
-  const adminNavItems = [{ label: "Dashboard", page: "admin", icon: "📊" }];
+  const adminNavItems = [
+    { label: "Dashboard", page: "admin", icon: "📊" },
+    { label: "Health", page: "health", icon: "🩺" },
+    { label: "Monitoring", page: "dashboard", icon: "📈" }
+  ];
 
   const navItems = isAdmin ? adminNavItems : userNavItems;
 
@@ -22,6 +28,11 @@ export default function Header({ go, isAdmin = false }) {
             alignItems: "center",
           }}
         >
+          {back && (
+            <button onClick={back} style={{ marginRight: "6px" }}>
+              ← Back
+            </button>
+          )}
           {isAdmin && (
             <span
               style={{ fontSize: "18px", fontWeight: "600", color: "white" }}

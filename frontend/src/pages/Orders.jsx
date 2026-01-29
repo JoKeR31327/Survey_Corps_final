@@ -4,7 +4,7 @@ import { authRequest } from "../api/client";
 import { ORDER_API } from "../api/config";
 import { getToken } from "../utils/storage";
 
-export default function Orders({ go }) {
+export default function Orders({ go, back }) {
   const [orders, setOrders] = useState([]);
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
@@ -33,7 +33,7 @@ export default function Orders({ go }) {
     <div
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
-      <Header go={go} />
+      <Header go={go} back={back} />
       <div className="container">
         <h2>📋 Order History</h2>
 
@@ -76,22 +76,26 @@ export default function Orders({ go }) {
         )}
         {status === "ready" && orders.length > 0 && (
           <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <table className="themed-table">
               <thead>
-                <tr style={{ backgroundColor: "#f0f2f5" }}>
-                  <th style={{ padding: "12px", textAlign: "left" }}>Order ID</th>
-                  <th style={{ padding: "12px", textAlign: "left" }}>Product</th>
-                  <th style={{ padding: "12px", textAlign: "left" }}>Qty</th>
-                  <th style={{ padding: "12px", textAlign: "left" }}>Status</th>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Product</th>
+                  <th>Qty</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
                 {orders.map((o) => (
-                  <tr key={o.order_id} style={{ borderBottom: "1px solid #e0e6ed" }}>
-                    <td style={{ padding: "12px" }}>{o.order_id}</td>
-                    <td style={{ padding: "12px" }}>{o.product_id}</td>
-                    <td style={{ padding: "12px" }}>{o.quantity}</td>
-                    <td style={{ padding: "12px" }}>{o.status}</td>
+                  <tr key={o.order_id}>
+                    <td>{o.order_id}</td>
+                    <td>{o.product_id}</td>
+                    <td>{o.quantity}</td>
+                    <td>
+                      <span className={`status-pill status-${o.status?.toLowerCase()}`}>
+                        {o.status}
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </tbody>

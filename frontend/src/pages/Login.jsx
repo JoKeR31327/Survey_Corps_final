@@ -4,18 +4,10 @@ import { USER_API } from "../api/config";
 import { setToken } from "../utils/storage";
 
 export default function Login({ go }) {
-  // Predefined admin accounts
-  const PREDEFINED_ADMINS = [
-    { username: "admin", password: "admin123" },
-    { username: "manager", password: "manager123" },
-  ];
-
   const [isSignUp, setIsSignUp] = useState(false);
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [userType, setUserType] = useState("user");
   const [errors, setErrors] = useState({});
 
   const validateEmail = (email) => {
@@ -61,33 +53,12 @@ export default function Login({ go }) {
     e.preventDefault();
     const newErrors = {};
 
-    if (userType === "admin") {
-      if (!username.trim()) newErrors.username = "Username is required";
-    } else {
-      if (!email.trim()) newErrors.email = "Email is required";
-      if (!validateEmail(email)) newErrors.email = "Please enter a valid email";
-    }
+    if (!email.trim()) newErrors.email = "Email is required";
+    if (!validateEmail(email)) newErrors.email = "Please enter a valid email";
     if (!password) newErrors.password = "Password is required";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      return;
-    }
-
-    // Check if it's an admin login
-    if (userType === "admin") {
-      const adminExists = PREDEFINED_ADMINS.find(
-        (admin) => admin.username === username && admin.password === password,
-      );
-
-      if (adminExists) {
-        go("admin");
-        setUsername("");
-        setPassword("");
-        setErrors({});
-      } else {
-        setErrors({ login: "Invalid admin credentials." });
-      }
       return;
     }
 
@@ -125,7 +96,6 @@ export default function Login({ go }) {
           onClick={() => {
             setIsSignUp(false);
             setErrors({});
-            setUserType("user");
           }}
           className={!isSignUp ? "primary-btn" : "secondary-btn"}
           style={{ flex: 1 }}
@@ -137,7 +107,6 @@ export default function Login({ go }) {
           onClick={() => {
             setIsSignUp(true);
             setErrors({});
-            setUserType("user");
           }}
           className={isSignUp ? "primary-btn" : "secondary-btn"}
           style={{ flex: 1 }}
@@ -147,83 +116,28 @@ export default function Login({ go }) {
       </div>
 
       <form onSubmit={handleSubmit}>
-        {!isSignUp && (
-          <div className="form-group">
-            <label>Login As</label>
-            <div style={{ display: "flex", gap: "12px", marginBottom: "20px" }}>
-              <button
-                type="button"
-                onClick={() => setUserType("user")}
-                className={
-                  userType === "user" ? "primary-btn" : "secondary-btn"
-                }
-                style={{ flex: 1 }}
-              >
-                👤 User
-              </button>
-              <button
-                type="button"
-                onClick={() => setUserType("admin")}
-                className={
-                  userType === "admin" ? "primary-btn" : "secondary-btn"
-                }
-                style={{ flex: 1 }}
-              >
-                ⚙️ Admin
-              </button>
-            </div>
-          </div>
-        )}
-
-        {userType === "admin" && !isSignUp && (
-          <div className="form-group">
-            <label>Username</label>
-            <input
-              type="text"
-              placeholder="Enter your username"
-              value={username}
-              onChange={(e) => {
-                setUsername(e.target.value);
-                if (errors.username) setErrors({ ...errors, username: "" });
-              }}
-              style={{
-                borderColor: errors.username ? "#e74c3c" : "#e0e6ed",
-              }}
-            />
-            {errors.username && (
-              <p
-                style={{ color: "#e74c3c", fontSize: "12px", marginTop: "4px" }}
-              >
-                {errors.username}
-              </p>
-            )}
-          </div>
-        )}
-
-        {(isSignUp || userType === "user") && (
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                if (errors.email) setErrors({ ...errors, email: "" });
-              }}
-              style={{
-                borderColor: errors.email ? "#e74c3c" : "#e0e6ed",
-              }}
-            />
-            {errors.email && (
-              <p
-                style={{ color: "#e74c3c", fontSize: "12px", marginTop: "4px" }}
-              >
-                {errors.email}
-              </p>
-            )}
-          </div>
-        )}
+        <div className="form-group">
+          <label>Email</label>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (errors.email) setErrors({ ...errors, email: "" });
+            }}
+            style={{
+              borderColor: errors.email ? "#e74c3c" : "#e0e6ed",
+            }}
+          />
+          {errors.email && (
+            <p
+              style={{ color: "#e74c3c", fontSize: "12px", marginTop: "4px" }}
+            >
+              {errors.email}
+            </p>
+          )}
+        </div>
 
         <div className="form-group">
           <label>Password</label>
@@ -309,8 +223,6 @@ export default function Login({ go }) {
       >
         {isSignUp ? (
           <>Sign up to create a user account</>
-        ) : userType === "admin" ? (
-          <>Admin credentials required</>
         ) : (
           <>Create an account via Sign Up first</>
         )}

@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import { apiRequest } from "../api/client";
 import { INVENTORY_API } from "../api/config";
 
-export default function Admin({ go }) {
+export default function Admin({ go, back }) {
   const [products, setProducts] = useState([]);
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
@@ -28,7 +28,7 @@ export default function Admin({ go }) {
     <div
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
-      <Header go={go} isAdmin={true} />
+      <Header go={go} back={back} isAdmin={true} />
       <div className="container">
         <h2>⚙️ Admin Dashboard</h2>
 

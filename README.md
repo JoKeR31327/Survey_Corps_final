@@ -11,7 +11,6 @@
 - Cloud SQL (PostgreSQL) instance: `your-self`
 - Database: `warehouse_db`
 - User: `warehouse_user`
-- Password: `Pir08CXKH7DAuNVgby2p`
 - Cloud Tasks queue: `inventory-queue` (region `us-central1`)
 - Region: `us-central1`
 

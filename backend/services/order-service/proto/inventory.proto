@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package inventory;
+
+service InventoryService {
+  rpc ReserveStock (ReserveRequest) returns (ReserveResponse);
+}
+
+message ReserveRequest {
+  string orderId = 1;
+}
+
+message ReserveResponse {
+  bool success = 1;
+}
